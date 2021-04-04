@@ -17,7 +17,7 @@ const TodoApp = () => {
 
   useEffect(() => {
     getTodos();
-  });
+  }, []);
 
   async function getTodos() {
     const todoRef = await firestore()
