@@ -49,7 +49,7 @@ export async function deleteTodo(todo, user) {
     .delete();
 }
 
-export async function handleUpdateStart(todo, user) {
+export async function updateStart(todo, user) {
   await userDataRef
     .doc(user)
     .collection("TODOS")
@@ -59,7 +59,7 @@ export async function handleUpdateStart(todo, user) {
     });
 }
 
-export async function handleUpdateFinish(todo, user) {
+export async function updateFinish(todo, user) {
   await userDataRef
     .doc(user)
     .collection("TODOS")

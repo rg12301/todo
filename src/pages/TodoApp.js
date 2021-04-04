@@ -7,8 +7,8 @@ import {
   deleteTodo,
   getUser,
   handleSignOut,
-  handleUpdateFinish,
-  handleUpdateStart,
+  updateFinish,
+  updateStart,
 } from "../utils/firebaseUtils";
 import { firestore } from "../utils/firebase";
 
@@ -16,6 +16,7 @@ const TodoApp = () => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
+    console.log("fetching todo");
     getTodos();
   }, []);
 
@@ -33,6 +34,43 @@ const TodoApp = () => {
     setTodos(TODOS);
   }
 
+  const handleAddTodo = (todo, user) => {
+    addTodo(todo, user);
+    const updatedTodos = [...todos];
+    updatedTodos.unshift(todo);
+    setTodos(updatedTodos);
+  };
+
+  const handleUpdateFinish = (todo, user) => {
+    updateFinish(todo, user);
+    const updatedTodos = todos.map((td) => {
+      if (td.id === todo.id) {
+        td.finishStatus = !todo.finishStatus;
+      }
+      return td;
+    });
+    setTodos(updatedTodos);
+  };
+
+  const handleUpdateStart = (todo, user) => {
+    updateStart(todo, user);
+    const updatedTodos = todos.map((td) => {
+      if (td.id === todo.id) {
+        td.startStatus = !todo.startStatus;
+      }
+      return td;
+    });
+    setTodos(updatedTodos);
+  };
+
+  const handleDeleteTodo = (todo, user) => {
+    deleteTodo(todo, user);
+    const updatedTodos = todos.filter((td) => {
+      return td.id !== todo.id;
+    });
+    setTodos(updatedTodos);
+  };
+
   return (
     <div className="flex flex-col text-gray-700 min-h-screen relative pb-36">
       <nav className="mt-4 md:mt-8 mr-4 md:mr-8 flex flex-row-reverse">
@@ -47,10 +85,10 @@ const TodoApp = () => {
         Todo App
       </h1>
       <main className="container px-5 mx-auto">
-        <AddTodo addTodo={addTodo} />
+        <AddTodo addTodo={handleAddTodo} />
         <TodoList
           todos={todos}
-          onDelete={deleteTodo}
+          onDelete={handleDeleteTodo}
           onFinish={handleUpdateFinish}
           onStart={handleUpdateStart}
         />

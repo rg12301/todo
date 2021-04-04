@@ -12,13 +12,14 @@ import { useState, useEffect } from "react";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
+    console.log(user, "user");
     const unsubscribe = auth().onAuthStateChanged(
       (_user) => {
         setUser(_user);
       }
     );
     return unsubscribe;
-  });
+  }, [user]);
   return (
     // <Router>
     //   <Switch>
