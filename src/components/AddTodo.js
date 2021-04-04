@@ -1,11 +1,25 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { getUser } from "../utils/firebaseUtils";
+
 const AddTodo = ({ addTodo }) => {
   const [input, setInput] = useState("");
 
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   addTodo(input);
+  //   setInput("");
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    addTodo(input);
-    setInput("");
+    const newTodo = {
+      id: uuidv4(),
+      content: input,
+      startStatus: false,
+      finishStatus: false,
+    };
+    addTodo(newTodo, getUser());
   };
 
   return (

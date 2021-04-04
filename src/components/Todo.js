@@ -1,26 +1,20 @@
 import ToggleButton from "./ToogleButton";
+import { getUser } from "../utils/firebaseUtils";
 
-const Todo = ({
-  id,
-  content,
-  startStatus,
-  finishStatus,
-  onStart,
-  onFinish,
-  onDelete,
-}) => {
+const Todo = ({ todo, onStart, onFinish, onDelete }) => {
+  const user = getUser();
   return (
     <div className="flex justify-around space-x-2 my-0.5 w-full md:w-5/6 lg:w-2/3 xl:w-1/2 mx-auto py-2 px-2">
       <span className="bg-blue-50 rounded flex-grow py-2 px-5 font-semibold">
-        {content}
+        {todo.content}
       </span>
 
       <ToggleButton
         color="green"
-        toggle={startStatus}
+        toggle={todo.startStatus}
         onClick={() => {
-          finishStatus && onFinish(id);
-          onStart(id);
+          todo.finishStatus && onFinish(todo, user);
+          onStart(todo, user);
         }}
       >
         Start
@@ -28,10 +22,10 @@ const Todo = ({
 
       <ToggleButton
         color="yellow"
-        toggle={finishStatus}
+        toggle={todo.finishStatus}
         onClick={() => {
-          startStatus && onStart(id);
-          onFinish(id);
+          todo.startStatus && onStart(todo, user);
+          onFinish(todo, user);
         }}
       >
         Finish
@@ -39,7 +33,7 @@ const Todo = ({
 
       <ToggleButton
         color="red"
-        onClick={() => onDelete(id)}
+        onClick={() => onDelete(todo, user)}
       >
         Delete
       </ToggleButton>
